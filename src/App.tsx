@@ -2,15 +2,10 @@ import { useEffect, useRef, useState } from 'react'
 import {
   ArrowDown,
   ArrowUp,
-  ChevronDown,
-  CircleHelp,
   Compass,
-  Menu,
   MessageSquare,
-  MoreHorizontal,
   Plus,
   Sparkles,
-  X,
 } from 'lucide-react'
 
 type Message = { role: 'user' | 'assistant'; content: string }
@@ -26,7 +21,6 @@ const API_BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8000'
 function App() {
   const [messages, setMessages] = useState<Message[]>([])
   const [draft, setDraft] = useState('')
-  const [sidebarOpen, setSidebarOpen] = useState(false)
   const [isThinking, setIsThinking] = useState(false)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const messageEndRef = useRef<HTMLDivElement>(null)
@@ -37,7 +31,6 @@ function App() {
   function startNewChat() {
     setMessages([])
     setDraft('')
-    setSidebarOpen(false)
     window.setTimeout(() => textareaRef.current?.focus(), 30)
   }
 
@@ -76,48 +69,23 @@ function App() {
 
   return (
     <div className="app-shell">
-      <aside className={`sidebar ${sidebarOpen ? 'sidebar-open' : ''}`}>
-        <div className="sidebar-top">
-          <a className="wordmark" href="#home" onClick={startNewChat} aria-label="Commonplace home">
-            <span className="brand-mark"><span /></span>
-            <span>commonplace</span>
-          </a>
-          <button className="icon-button mobile-close" onClick={() => setSidebarOpen(false)} aria-label="Close menu">
-            <X size={19} />
-          </button>
-          <button className="icon-button desktop-menu" aria-label="Collapse sidebar">
-            <Menu size={19} />
-          </button>
-        </div>
-
-        <button className="new-chat-button" onClick={startNewChat}>
-          <Plus size={17} strokeWidth={2.2} />
-          <span>New conversation</span>
-          <span className="shortcut">⌘ K</span>
-        </button>
-
-        <div className="sidebar-bottom">
-          <button className="utility-item"><CircleHelp size={16} /><span>Help &amp; feedback</span><MoreHorizontal size={17} className="utility-more" /></button>
-          <button className="profile-button">
-            <span className="avatar">J</span>
-            <span className="profile-copy"><strong>Jordan Lee</strong><small>Personal space</small></span>
-            <MoreHorizontal size={17} className="profile-more" />
-          </button>
-        </div>
-      </aside>
-
-      {sidebarOpen && <button className="sidebar-scrim" onClick={() => setSidebarOpen(false)} aria-label="Close navigation" />}
-
       <main className="main-panel">
         <header className="topbar">
           <div className="topbar-left">
-            <button className="icon-button mobile-menu" onClick={() => setSidebarOpen(true)} aria-label="Open menu"><Menu size={20} /></button>
-            <span className="mobile-wordmark"><span className="brand-mark"><span /></span> commonplace</span>
-            <button className="model-select">Commonplace <ChevronDown size={14} /></button>
+            <a className="wordmark topbar-wordmark" href="#home" onClick={startNewChat} aria-label="Kishibot home">
+              <span className="brand-mark"><span /></span>
+              <span>kishibot</span>
+            </a>
           </div>
-          <button className="share-button" onClick={() => navigator.clipboard?.writeText(window.location.href)} title="Copy conversation link">
-            <ArrowDown size={15} /> <span>Share</span>
-          </button>
+          <div className="topbar-actions">
+            <button className="topbar-new-chat" onClick={startNewChat}>
+              <Plus size={16} strokeWidth={2.2} />
+              <span>New conversation</span>
+            </button>
+            <button className="share-button" onClick={() => navigator.clipboard?.writeText(window.location.href)} title="Copy conversation link">
+              <ArrowDown size={15} /> <span>Share</span>
+            </button>
+          </div>
         </header>
 
         <section className={`conversation-view ${messages.length ? 'has-messages' : 'is-empty'}`}>
@@ -142,7 +110,7 @@ function App() {
                 <article className={`message-row message-${message.role}`} key={index}>
                   {message.role === 'assistant' ? <span className="assistant-mark"><span /></span> : <span className="user-avatar">J</span>}
                   <div className="message-body">
-                    <div className="message-author">{message.role === 'assistant' ? 'Commonplace' : 'You'}</div>
+                    <div className="message-author">{message.role === 'assistant' ? 'Kishibot' : 'You'}</div>
                     <p>{message.content}</p>
                   </div>
                 </article>
@@ -175,7 +143,7 @@ function App() {
               </button>
             </div>
           </form>
-          <p className="disclaimer">Commonplace can make mistakes. Check important details.</p>
+          <p className="disclaimer">Kishibot can make mistakes. Check important details.</p>
         </div>
       </main>
     </div>

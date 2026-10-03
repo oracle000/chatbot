@@ -1,4 +1,4 @@
-# Commonplace
+# Kishibot
 
 A responsive React chat interface built with Vite and TypeScript, backed by a FastAPI service. Conversations stay in memory for the current browser session. The API currently returns a local demo response; it is not connected to an AI model provider.
 
